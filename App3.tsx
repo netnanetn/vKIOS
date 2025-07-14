@@ -1249,7 +1249,7 @@ const App3: React.FC = () => {
     <Icon name="cog-outline" size={24} color="#fff" />
   </TouchableOpacity> */}
 
-  {/* Giữa: Text căn giữa */}
+  {/* Giữa: Text căn j giữa */}
   <View style={{ flex: 1, alignItems: 'center', marginLeft:40, }}>
     <Text
       style={{
