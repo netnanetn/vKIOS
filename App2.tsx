@@ -378,7 +378,7 @@ const App2: React.FC = () => {
             result: 'base64',
             quality: 1,
           }}
-          style={{ width: 384, backgroundColor: 'white' }}
+          style={{ width: 400, backgroundColor: 'white' }}
         >
           <View style={{ padding: 16, backgroundColor: 'white' }}>
             <Text
@@ -392,11 +392,11 @@ const App2: React.FC = () => {
             <Text style={{ textAlign: 'center' }}>
               ------------------------------
             </Text>
-            <Text style={{ textAlign: 'center', fontSize: 20 }}>
+            <Text style={{ textAlign: 'center', fontSize: 30, fontWeight: 'bold' }}>
               {selectedInfo?.dv}
             </Text>
             <Text
-              style={{ textAlign: 'center', fontSize: 34, fontWeight: 'bold' }}
+              style={{ textAlign: 'center', fontSize: 50, fontWeight: 'bold' }}
             >
               {selectedInfo?.currentNumber}
             </Text>
@@ -404,15 +404,15 @@ const App2: React.FC = () => {
               ------------------------------
             </Text>
             <Text style={{ textAlign: 'center', fontSize: 20 }}>
-              Vui lòng chờ đến lượt lấy số thứ tự
+              Vui lòng chờ đến số được gọi
             </Text>
             <Text style={{ textAlign: 'center', marginTop: 8, fontSize: 20 }}>
-              Ngày giờ lấy phiếu: 07-07-2025
+              Ngày giờ lấy phiếu: {new Date().toLocaleString('vi-VN')}
             </Text>
           </View>
         </ViewShot>
       </View>
-
+√
       <TouchableOpacity
         style={[styles.configButton]}
         onPress={() => openConfig()}

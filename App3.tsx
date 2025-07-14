@@ -331,15 +331,15 @@ const App3: React.FC = () => {
               fontSize: 30,
               marginVertical: 12,
               fontWeight: 800,
-              paddingRight: 40,
-              paddingLeft: 40,
-              borderRightWidth: 1,
-              borderRightColor: '#ffffff',
+              paddingRight: 20,
+              paddingLeft: 0,
+              // borderRightWidth: 1,
+              // borderRightColor: '#ffffff',
               color: '#ffffff',
             },
           ]}
         >
-          vKIOS
+          {/* vKIOS */}
         </Text>
         <View
           style={{
@@ -347,23 +347,23 @@ const App3: React.FC = () => {
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-            marginRight: 100,
+            marginRight: 20,
           }}
         >
           <Text
             style={{
               fontSize: 22,
-              marginVertical: 5,
+              marginVertical: 1,
               color: 'white',
               fontWeight: 800,
             }}
           >
-            BỘ PHẬN MỘT CỬA
+            HỆ THỐNG LẤY SỐ THỨ TỰ
           </Text>
           <Text
             style={{
               fontSize: 30,
-              marginVertical: 5,
+              marginVertical: 1,
               color: 'white',
               //borderRadius: 8,
               fontWeight: 800,
@@ -372,15 +372,65 @@ const App3: React.FC = () => {
             {headerText}
           </Text>
         </View>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={[styles.configButton]}
           onPress={() => openConfig()}
         >
           <Icon name="cog-outline" size={24} color="#fff" />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
       <View
+      style={{
+        display: 'flex',
+        backgroundColor: '#ffffff',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 60,
+      }}
+    >
+      {/* Phần bên trái - cố định 50px */}
+      <View style={{ width: 40 }} />
+
+      {/* Phần giữa - co giãn */}
+      <View style={{ flex: 1, alignItems: 'center' }}>
+        <Text
+          style={{
+            fontSize: 16,
+            color: '#004aad',
+            fontWeight: '800',
+            backgroundColor: '#fbf593',
+            paddingVertical: 6,
+            paddingHorizontal: 15,
+            borderRadius: 30,
+          }}
+        >
+          DANH MỤC LĨNH VỰC, DỊCH VỤ
+        </Text>
+      </View>
+
+      {/* Phần bên phải - cố định 50px */}
+      <View style={{ width: 40, alignItems: 'center', justifyContent: 'center' }}>
+        <TouchableOpacity
+          style={{
+            width: 25,
+            height: 25,
+            opacity: 0.7,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'orange', // hoặc bỏ nếu muốn trong suốt
+            borderRadius: 15,
+          }}
+          onPress={() => openConfig()}
+        >
+          <Icon name="cog-outline" size={20} color="#fff" />
+        </TouchableOpacity>
+      </View>
+    </View>
+
+
+      {/* <View
         style={{
           display: 'flex',
           backgroundColor: '#ffffff',
@@ -392,18 +442,23 @@ const App3: React.FC = () => {
       >
         <Text
           style={{
-            fontSize: 22,
+            fontSize: 16,
             color: '#004aad',
             fontWeight: 800,
+            backgroundColor: '#fbf593',
+            padding:6,
+            paddingStart:15,
+            paddingEnd:15,
+            borderRadius:30,
           }}
         >
-          HỆ THỐNG LẤY SỐ THỨ TỰ
+          DANH MỤC LĨNH VỰC, DỊCH VỤ
         </Text>
-      </View>
+      </View> */}
 
       <View style={[styles.gridContainer]}>
         {/* Header */}
-        <View style={[styles.gridRow, { backgroundColor: 'red' }]}>
+        {/* <View style={[styles.gridRow, { backgroundColor: 'red' }]}>
           <View style={[styles.gridCell, styles.gridHeaderCell, { flex: 1 }]}>
             <Text style={styles.gridHeaderText}>KV/QUẦY</Text>
           </View>
@@ -411,7 +466,7 @@ const App3: React.FC = () => {
             style={[
               styles.gridCell,
               styles.gridHeaderCell,
-              { flex: 3, alignItems: 'flex-start', paddingLeft: 40 },
+              { flex: 3, alignItems: 'flex-start', paddingLeft: 15 },
             ]}
           >
             <Text style={styles.gridHeaderText}>LĨNH VỰC / DỊCH VỤ</Text>
@@ -422,63 +477,209 @@ const App3: React.FC = () => {
           <View style={[styles.gridCell, styles.gridHeaderCell, { flex: 1 }]}>
             <Text style={styles.gridHeaderText}>LẤY SỐ</Text>
           </View>
-        </View>
+        </View> */}
+
+        {serviceList.length > 5 ? (
+          <View style={[styles.gridRow, { backgroundColor: '#004aad' }]}>
+            {/* Cột 2: LĨNH VỰC / DỊCH VỤ - tự co dãn */}
+            <View
+              style={{
+                flex: 1,
+                alignItems: 'flex-start',
+                paddingLeft: 10,
+                marginVertical: 10,
+              }}
+            >
+              <Text style={styles.gridHeaderText}>LĨNH VỰC / DỊCH VỤ</Text>
+            </View>
+
+            {/* Cột 3: SỐ TIẾP - cố định */}
+            <View
+              style={{
+                width: 85,
+                borderLeftWidth: 1,
+                borderLeftColor: '#ffffff',
+                marginVertical: 10,
+              }}
+            >
+              <Text style={styles.gridHeaderText}>SỐ TIẾP</Text>
+            </View>
+
+            {/* Cột 4: LẤY SỐ - cố định */}
+            <View
+              style={{
+                width: 95,
+                borderLeftWidth: 1,
+                borderLeftColor: '#ffffff',
+                marginVertical: 10,
+              }}
+            >
+              <Text style={styles.gridHeaderText}>LẤY SỐ</Text>
+            </View>
+          </View>
+        ) : null}
+
 
         {/* Body */}
-        {serviceList.map((item, index) => (
+        {serviceList.length > 5 ? (
+        // Hiển thị theo kiểu "nhiều mục" (> 5)
+        serviceList.map((item, index) => (
           <View key={index} style={styles.gridRow}>
-            <View style={[styles.gridCell, { flex: 1 }]}>
-              <Text style={styles.gridCellText}>QUẦY {item.stt}</Text>
-            </View>
-            <View style={[styles.gridCellDichVu, { flex: 3 }]}>
-              <Text style={styles.gridCellText}>{item.dv}</Text>
-            </View>
-            <View style={[styles.gridCell, { flex: 1 }]}>
+            {/* Hiển thị theo kiểu nhiều mục như bạn đã viết */}
+            <View
+              style={{
+                flex: 1,
+                alignItems: 'flex-start',
+                paddingLeft: 10,
+                marginVertical: 13,
+              }}
+            >
               <Text
-                style={[styles.gridCellText, { fontSize: 24, fontWeight: 900 }]}
+                style={{
+                  fontSize: 20,
+                  fontWeight: '900',
+                  textAlign: 'left',
+                  alignSelf: 'flex-start',
+                }}
+              >
+                {item.dv}
+              </Text>
+            </View>
+            <View
+              style={{
+                width: 85,
+                borderLeftWidth: 1,
+                borderLeftColor: '#004aad',
+                marginVertical: 10,
+              }}
+            >
+              <Text
+                style={{
+                  textAlign: 'center',
+                  color: '#004aad',
+                  fontSize: 25,
+                  fontWeight: '900',
+                }}
               >
                 {item.currentNumber}
               </Text>
             </View>
+            <View
+              style={{
+                width: 95,
+                borderLeftWidth: 1,
+                borderLeftColor: '#004aad',
+                marginVertical: 10,
+                paddingStart: 5,
+                paddingEnd: 5,
+              }}
+            >
+              <TouchableOpacity
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  backgroundColor: '#fbf593',
+                  borderRadius: 4,
+                  padding: 1,
+                  borderRightWidth: 1,
+                  borderBottomWidth: 1,
+                  borderColor: '#ccc',
+                  justifyContent: 'center',
+                }}
+                onPress={() => captureAndPrint(item.stt)}
+              >
+                <Icon
+                  name="gesture-tap"
+                  style={{ paddingBottom: 5 }}
+                  size={26}
+                  color="#FB6A09"
+                />
+                <Text
+                  style={{
+                    color: '#004aad',
+                    fontSize: 15,
+                    marginRight: 2,
+                    fontWeight: '700',
+                  }}
+                >
+                  LẤY SỐ
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        ))
+      ) : (
+        // Hiển thị theo kiểu "ít mục" (<= 5)
+        serviceList.map((item, index) => (
+          <View
+          key={index}
+          style={{
+            borderRadius: 6,
+            marginVertical: 2,
+            marginTop: 0,
+            marginBottom: 10,
+            padding: 10,
+            backgroundColor: '#004aad',
+            marginHorizontal: 10,
+          }}
+        >
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center', // ✅ Căn giữa theo chiều dọc
+            }}
+          >
+            {/* Phần Text dịch vụ */}
+            <View style={{ flex: 1, paddingRight: 10 }}>
+              <Text
+                style={{
+                  fontSize: 22,
+                  color: '#ffffff',
+                  flexWrap: 'wrap',
+                }}
+              >
+                {item.dv}
+              </Text>
+            </View>
+
+            {/* Nút LẤY SỐ */}
             <TouchableOpacity
               style={{
-                flexDirection: 'row',
-                alignItems: 'center',
+                width: 86,
                 backgroundColor: '#fbf593',
-                paddingEnd: 5,
-                //  paddingVertical: 5,
-                //  width: '100%',
-                //  paddingHorizontal: 5,
-                borderRadius: 2,
-                //margin: 2,
-                flex: 1,
-                padding: 10,
+                borderRadius: 4,
+                paddingVertical: 6,
                 borderRightWidth: 1,
                 borderBottomWidth: 1,
                 borderColor: '#ccc',
+                flexDirection: 'row',
                 justifyContent: 'center',
+                alignItems: 'center',
               }}
               onPress={() => captureAndPrint(item.stt)}
             >
               <Icon
                 name="gesture-tap"
-                style={{ paddingBottom: 10 }}
-                size={26}
+                size={20}
                 color="#FB6A09"
+                style={{ marginRight: 4 }}
               />
               <Text
                 style={{
+                  fontSize: 14,
+                  fontWeight: 'bold',
                   color: '#004aad',
-                  fontSize: 16,
-                  marginLeft: 8,
-                  fontWeight: '600',
                 }}
               >
                 LẤY SỐ
               </Text>
             </TouchableOpacity>
           </View>
-        ))}
+        </View>
+
+        ))
+      )}
+
       </View>
 
       {/* ViewShot ẩn, nằm ngoài vùng nhìn thấy */}
@@ -490,36 +691,42 @@ const App3: React.FC = () => {
             result: 'base64',
             quality: 1,
           }}
-          style={{ width: 384, backgroundColor: 'white' }}
+          style={{ width: 444, backgroundColor: 'white' }}
         >
-          <View style={{ padding: 16, backgroundColor: 'white' }}>
+          <View style={{ padding: 16, paddingTop:0, backgroundColor: 'white' }}>
+          <Text style={{ textAlign: 'center', fontSize: 20 }}>
+            HỆ THỐNG LẤY SỐ THỨ TỰ
+            </Text>
             <Text
               style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 30 }}
             >
               {headerText}
             </Text>
-            <Text style={{ textAlign: 'center', fontSize: 20 }}>
-              BỘ PHẬN MỘT CỬA
-            </Text>
             <Text style={{ textAlign: 'center' }}>
               ------------------------------
             </Text>
-            <Text style={{ textAlign: 'center', fontSize: 20 }}>
+            <Text style={{ textAlign: 'center', fontSize: 25, fontWeight: 'bold', }}>
               {selectedInfo?.dv}
             </Text>
             <Text
-              style={{ textAlign: 'center', fontSize: 34, fontWeight: 'bold' }}
+              style={{ textAlign: 'center', fontSize: 50, fontWeight: 'bold' }}
             >
               {selectedInfo?.currentNumber}
             </Text>
             <Text style={{ textAlign: 'center' }}>
               ------------------------------
             </Text>
-            <Text style={{ textAlign: 'center', fontSize: 20 }}>
-              Vui lòng chờ đến lượt lấy số thứ tự
+            <Text style={{ textAlign: 'center', fontSize: 25 }}>
+                          Vui lòng chờ đến số được gọi
             </Text>
-            <Text style={{ textAlign: 'center', marginTop: 8, fontSize: 20 }}>
-              Ngày giờ lấy phiếu: 07-07-2025
+            <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 22 }}>
+              Ngày giờ lấy phiếu: {new Date().toLocaleString('vi-VN')}
+            </Text>
+            <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 22 }}>
+              
+            </Text>
+            <Text style={{ textAlign: 'center', marginTop: 10, fontSize: 22 }}>
+              Xin cảm ơn!
             </Text>
           </View>
         </ViewShot>
@@ -574,9 +781,9 @@ const App3: React.FC = () => {
             ListHeaderComponent={
               <>
                 <Text
-                  style={{ fontWeight: 'bold', fontSize: 18, marginBottom: 10 }}
+                  style={{ fontWeight: 'bold', fontSize: 20, paddingStart:10, paddingTop:10, marginBottom: 10, textAlign: 'center', justifyContent: 'center', }}
                 >
-                  Cấu hình từng dịch vụ:
+                  CẤU HÌNH HỆ THỐNG
                 </Text>
 
                 <View
@@ -596,9 +803,12 @@ const App3: React.FC = () => {
                       styles.textInput,
                       {
                         color: 'blue',
-                        fontSize: 14,
+                        fontSize: 16,
                         fontWeight: '800',
                         flex: 1,
+                        borderWidth:1, 
+                        marginLeft:10,
+                        paddingStart:10,
                       },
                     ]}
                   />
@@ -610,15 +820,18 @@ const App3: React.FC = () => {
                     }}
                     onPress={() => saveHeaderText(headerText)}
                   >
-                    <Icon name="content-save" size={22} color="#007bff" />
+                    <Icon name="content-save" size={30} color="#007bff" />
                   </TouchableOpacity>
                 </View>
               </>
             }
             renderItem={({ item, index }) => (
-              <View style={styles.editItem}>
-                <Text style={styles.textLine}>STT: {item.stt}</Text>
 
+              <View style={styles.editItem}>
+                {/* KV/Quầy - cố định width */}
+                <Text style={[styles.textLine, { width: 40, marginTop:5, textAlign: 'right' }]}>Q:{item.stt}</Text>
+
+                {/* Tên dịch vụ - co dãn linh hoạt */}
                 <TextInput
                   value={item.dv}
                   onChangeText={text => {
@@ -626,10 +839,13 @@ const App3: React.FC = () => {
                     updated[index].dv = text;
                     setServiceList(updated);
                   }}
-                  style={styles.inputItem}
+                  style={[styles.inputItem, { flex: 1, marginHorizontal: 2, height: 35,
+                    paddingVertical: 4,
+               }]}
                   placeholder="Nhập tên dịch vụ"
                 />
 
+                {/* Số bắt đầu - cố định width */}
                 <TextInput
                   value={item.startNumber.toString()}
                   keyboardType="numeric"
@@ -638,10 +854,13 @@ const App3: React.FC = () => {
                     updated[index].startNumber = parseInt(text || '0');
                     setServiceList(updated);
                   }}
-                  style={styles.inputItem}
+                  style={[styles.inputItem, { width: 80, marginHorizontal: 2, height: 35,
+                    paddingVertical: 4,
+               }]}
                   placeholder="Số bắt đầu"
                 />
 
+                {/* Số hiện tại - cố định width */}
                 <TextInput
                   value={item.currentNumber.toString()}
                   keyboardType="numeric"
@@ -650,69 +869,221 @@ const App3: React.FC = () => {
                     updated[index].currentNumber = parseInt(text || '0');
                     setServiceList(updated);
                   }}
-                  style={styles.inputItem}
-                  placeholder="Nhập số thứ tự"
+                  style={[styles.inputItem, { width: 65, paddingStart:10, marginHorizontal: 2, height: 35,
+                    paddingVertical: 4,
+               }]}
+                  placeholder="Số thứ tự"
                 />
 
+                {/* Nút Xóa - cố định width */}
                 <TouchableOpacity
-                  style={styles.deleteButton}
+                  style={[styles.deleteButton, { width: 45, height: 35, paddingVertical: 6, marginLeft: 5 }]}
                   onPress={() => {
                     const filtered = serviceList.filter((_, i) => i !== index);
                     setServiceList(filtered);
                   }}
                 >
-                  <Text style={{ color: '#fff', textAlign: 'center' }}>
-                    Xóa
-                  </Text>
+                  <Text style={{ color: '#fff', textAlign: 'center' }}>Xóa</Text>
                 </TouchableOpacity>
               </View>
+
+
+              // <View style={styles.editItem}>
+              //   <Text style={styles.textLine}>KV/Quầy: {item.stt}</Text>
+
+              //   <TextInput
+              //     value={item.dv}
+              //     onChangeText={text => {
+              //       const updated = [...serviceList];
+              //       updated[index].dv = text;
+              //       setServiceList(updated);
+              //     }}
+              //     style={styles.inputItem}
+              //     placeholder="Nhập tên dịch vụ"
+              //   />
+
+              //   <TextInput
+              //     value={item.startNumber.toString()}
+              //     keyboardType="numeric"
+              //     onChangeText={text => {
+              //       const updated = [...serviceList];
+              //       updated[index].startNumber = parseInt(text || '0');
+              //       setServiceList(updated);
+              //     }}
+              //     style={styles.inputItem}
+              //     placeholder="Số bắt đầu"
+              //   />
+
+              //   <TextInput
+              //     value={item.currentNumber.toString()}
+              //     keyboardType="numeric"
+              //     onChangeText={text => {
+              //       const updated = [...serviceList];
+              //       updated[index].currentNumber = parseInt(text || '0');
+              //       setServiceList(updated);
+              //     }}
+              //     style={styles.inputItem}
+              //     placeholder="Nhập số thứ tự"
+              //   />
+
+              //   <TouchableOpacity
+              //     style={styles.deleteButton}
+              //     onPress={() => {
+              //       const filtered = serviceList.filter((_, i) => i !== index);
+              //       setServiceList(filtered);
+              //     }}
+              //   >
+              //     <Text style={{ color: '#fff', textAlign: 'center' }}>
+              //       Xóa
+              //     </Text>
+              //   </TouchableOpacity>
+              // </View>
             )}
             ListFooterComponent={
-              <View style={{ marginTop: 20 }}>
-                <TouchableOpacity
-                  style={styles.addButton}
-                  onPress={() => {
-                    const newIndex = serviceList.length + 1;
-                    setServiceList([
-                      ...serviceList,
-                      {
-                        stt: newIndex.toString(),
-                        dv: 'Dịch vụ mới',
-                        startNumber: 1000,
-                        currentNumber: 1000 + newIndex,
-                      },
-                    ]);
-                  }}
-                >
-                  <Text style={{ color: '#fff', fontWeight: 'bold' }}>
-                    + Thêm dịch vụ
-                  </Text>
-                </TouchableOpacity>
 
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-around',
-                    marginTop: 20,
-                  }}
-                >
-                  <TouchableOpacity
-                    style={styles.saveButton}
-                    onPress={() => {
-                      saveServiceList(serviceList);
-                      setShowConfigModal(false);
-                    }}
-                  >
-                    <Text style={{ color: '#fff' }}>Lưu</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.cancelButton}
-                    onPress={() => setShowConfigModal(false)}
-                  >
-                    <Text style={{ color: '#fff' }}>Đóng</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
+<View
+  style={{
+    marginTop: 20,
+    marginLeft:10,  
+    marginRight:10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  }}
+>
+  {/* + Thêm dịch vụ */}
+  <TouchableOpacity
+    style={{
+      flex: 1,
+      marginRight: 5,
+      backgroundColor: '#007AFF',
+      height: 48,
+      borderRadius: 8,
+      justifyContent: 'center',
+      alignItems: 'center',
+    }}
+    onPress={() => {
+      const newIndex = serviceList.length + 1;
+      setServiceList([
+        ...serviceList,
+        {
+          stt: newIndex.toString(),
+          dv: 'Dịch vụ mới',
+          startNumber: newIndex*1000+1,
+          currentNumber: newIndex*1000 + 1,
+        },
+      ]);
+    }}
+  >
+    <Text style={{ color: '#fff', fontWeight: 'bold' }}>+ Thêm dịch vụ</Text>
+  </TouchableOpacity>
+
+  {/* Đặt lại số hiện tại */}
+  <TouchableOpacity
+    style={{
+      flex: 1,
+      marginHorizontal: 5,
+      backgroundColor: '#f39c12',
+      height: 48, 
+      borderRadius: 8,
+      justifyContent: 'center',
+      alignItems: 'center',
+    }}
+    onPress={async () => {
+      const resetList = serviceList.map(item => ({
+        ...item,
+        currentNumber: item.startNumber,
+      }));
+      setServiceList(resetList);
+      await AsyncStorage.setItem('SERVICE_LIST', JSON.stringify(resetList));
+    }}
+  >
+    <Text style={{ color: '#fff', fontWeight: 'bold' }}>Đặt lại số</Text>
+  </TouchableOpacity>
+
+  {/* Lưu */}
+  <TouchableOpacity
+    style={{
+      flex: 1,
+      marginHorizontal: 5,
+      backgroundColor: 'green',
+      height: 48,
+      borderRadius: 8,
+      justifyContent: 'center',
+      alignItems: 'center',
+    }}
+    onPress={() => {
+      saveServiceList(serviceList);
+      setShowConfigModal(false);
+    }}
+  >
+    <Text style={{ color: '#fff' }}>Lưu</Text>
+  </TouchableOpacity>
+
+  {/* Đóng */}
+  <TouchableOpacity
+    style={{
+      flex: 1,
+      marginLeft: 5,
+      backgroundColor: 'gray',
+      height: 48,
+      borderRadius: 8,
+      justifyContent: 'center',
+      alignItems: 'center',
+    }}
+    onPress={() => setShowConfigModal(false)}
+  >
+    <Text style={{ color: '#fff' }}>Đóng</Text>
+  </TouchableOpacity>
+</View>
+
+
+
+
+              // <View style={{ marginTop: 20 }}>
+              //   <TouchableOpacity
+              //     style={styles.addButton}
+              //     onPress={() => {
+              //       const newIndex = serviceList.length + 1;
+              //       setServiceList([
+              //         ...serviceList,
+              //         {
+              //           stt: newIndex.toString(),
+              //           dv: 'Dịch vụ mới',
+              //           startNumber: 1000,
+              //           currentNumber: 1000 + newIndex,
+              //         },
+              //       ]);
+              //     }}
+              //   >
+              //     <Text style={{ color: '#fff', fontWeight: 'bold' }}>
+              //       + Thêm dịch vụ
+              //     </Text>
+              //   </TouchableOpacity>
+
+              //   <View
+              //     style={{
+              //       flexDirection: 'row',
+              //       justifyContent: 'space-around',
+              //       marginTop: 20,
+              //     }}
+              //   >
+              //     <TouchableOpacity
+              //       style={styles.saveButton}
+              //       onPress={() => {
+              //         saveServiceList(serviceList);
+              //         setShowConfigModal(false);
+              //       }}
+              //     >
+              //       <Text style={{ color: '#fff' }}>Lưu</Text>
+              //     </TouchableOpacity>
+              //     <TouchableOpacity
+              //       style={styles.cancelButton}
+              //       onPress={() => setShowConfigModal(false)}
+              //     >
+              //       <Text style={{ color: '#fff' }}>Đóng</Text>
+              //     </TouchableOpacity>
+              //   </View>
+              // </View>
             }
           />
         </KeyboardAvoidingView>
@@ -819,13 +1190,13 @@ const App3: React.FC = () => {
           </View>
         </Modal>
       </TouchableOpacity>
-      <View
+      {/* <View
         style={{
           // backgroundColor: '#ffffff',
           flexDirection: 'row',
           justifyContent: 'center',
           alignItems: 'center',
-          height: 60,
+          height: 50,
           position: 'absolute',
           flex: 1,
           bottom: 10,
@@ -837,12 +1208,68 @@ const App3: React.FC = () => {
           style={{
             fontSize: 20,
             color: '#004aad',
+            textAlign: 'center',
             fontWeight: 800,
           }}
         >
-          VUI LÒNG BẤM LẤY SỐ THEO LĨNH VỰC, DỊCH VỤ VÀ LẤY PHIẾU Ở MÁY IN
+          VUI LÒNG BẤM LẤY SỐ THEO LĨNH VỰC, DỊCH VỤ{'\n'}
+          VÀ LẤY PHIẾU Ở MÁY IN
         </Text>
-      </View>
+      </View> */}
+<View
+  style={{
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 50,
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: '#fbf593',
+  }}
+>
+  {/* Bên trái: Nút cấu hình */}
+  {/* <TouchableOpacity
+    style={{
+      width: 25,
+      height: 25,
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      right: 0,
+      opacity:.60,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'orange', // hoặc bỏ nếu muốn trong suốt
+      borderRadius: 25,
+    }}
+    onPress={() => openConfig()}
+  >
+    <Icon name="cog-outline" size={24} color="#fff" />
+  </TouchableOpacity> */}
+
+  {/* Giữa: Text căn j giữa */}
+  <View style={{ flex: 1, alignItems: 'center', marginLeft:40, }}>
+    <Text
+      style={{
+        paddingTop:3,
+        fontSize: 16,
+        color: '#004aad',
+        textAlign: 'center',
+        fontWeight: 'bold',
+        lineHeight: 21,
+      }}
+    >
+      VUI LÒNG BẤM LẤY SỐ THEO LĨNH VỰC, DỊCH VỤ{'\n'}
+      VÀ LẤY PHIẾU Ở MÁY IN PHÍA DƯỚI
+    </Text>
+  </View>
+
+  {/* Bên phải: chừa khoảng trống 50px */}
+  <View style={{ width: 50 }} />
+</View>
+
     </View>
   );
 };
@@ -886,7 +1313,7 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: 'green',
   },
-  headerText: {
+  headerText1: {
     fontWeight: 'bold',
     color: 'white',
   },
@@ -933,7 +1360,7 @@ const styles = StyleSheet.create({
   },
   saveButton: { backgroundColor: 'green', padding: 12, borderRadius: 8 },
   cancelButton: { backgroundColor: 'gray', padding: 12, borderRadius: 8 },
-  textArea: {
+  textArea1: {
     flex: 1,
     backgroundColor: '#f2f2f2',
     padding: 10,
@@ -948,8 +1375,8 @@ const styles = StyleSheet.create({
   editItem: {
     backgroundColor: '#f9f9f9',
     padding: 5,
-    borderRadius: 10,
-    marginBottom: 5,
+    borderRadius: 4,
+    marginBottom: 1,
     elevation: 1,
     flex: 1,
     flexDirection: 'row',
@@ -958,7 +1385,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderWidth: 1,
     borderColor: '#ccc',
-    borderRadius: 8,
+    borderRadius: 4,
     padding: 5,
     marginTop: 4,
     marginLeft: 10,
@@ -973,18 +1400,18 @@ const styles = StyleSheet.create({
   deleteButton: {
     backgroundColor: 'red',
     padding: 10,
-    borderRadius: 8,
+    borderRadius: 4,
     marginTop: 5,
     marginLeft: 5,
   },
-  saveButton: {
+  saveButton1: {
     backgroundColor: 'green',
     padding: 15,
     borderRadius: 8,
     flex: 1,
     marginHorizontal: 5,
   },
-  cancelButton: {
+  cancelButton1: {
     backgroundColor: 'gray',
     padding: 15,
     borderRadius: 8,
@@ -998,7 +1425,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   gridContainer: {
-    borderWidth: 1,
+    borderWidth: 0,
     borderColor: '#ccc',
     borderRadius: 0,
     overflow: 'hidden',
@@ -1006,6 +1433,8 @@ const styles = StyleSheet.create({
 
   gridRow: {
     flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderColor: '#ccc',
   },
 
   gridCell: {
@@ -1020,7 +1449,7 @@ const styles = StyleSheet.create({
   gridCellDichVu: {
     flex: 2,
     padding: 10,
-    paddingLeft: 40,
+    paddingLeft: 15,
     borderRightWidth: 1,
     borderBottomWidth: 1,
     borderColor: '#ccc',
@@ -1056,7 +1485,7 @@ const styles = StyleSheet.create({
     margin: 5,
   },
 
-  printText: {
+  printText1: {
     marginLeft: 6,
     fontSize: 14,
     color: '#2e7d32',
