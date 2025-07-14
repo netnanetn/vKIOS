@@ -56,7 +56,7 @@ const App3: React.FC = () => {
   const [codeInput, setCodeInput] = useState('');
 
   useAutoResetServiceList(setServiceList);
-  // Dữ liệu mẫu khởi tạo
+  // Dữ liệu mẫu khởi tạo 2
   const initialData = [
     {
       stt: '1',
