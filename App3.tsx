@@ -164,7 +164,7 @@ const App3: React.FC = () => {
         //await Tts.setDefaultLanguage('vi');
         //await Tts.setDefaultVoice('vi-language_female_1'); // hoặc ID đúng mà bạn tìm được
 
-        await Tts.speak('xin chào hệ thống lấy số');
+        await Tts.speak('Hệ thống lấy số xin chào');
       })
       .catch(err => {
         console.error('TTS init failed:', err);
@@ -418,7 +418,7 @@ const App3: React.FC = () => {
         >
           <Text
             style={{
-              fontSize: 22,
+              fontSize: 20,
               marginVertical: 1,
               color: 'white',
               fontWeight: 800,
@@ -428,7 +428,7 @@ const App3: React.FC = () => {
           </Text>
           <Text
             style={{
-              fontSize: 30,
+              fontSize: 24,
               marginVertical: 1,
               color: 'white',
               //borderRadius: 8,
@@ -1365,7 +1365,7 @@ const App3: React.FC = () => {
           <Text
             style={{
               paddingTop: 3,
-              fontSize: 16,
+              fontSize: 12,
               color: '#004aad',
               textAlign: 'center',
               fontWeight: 'bold',
