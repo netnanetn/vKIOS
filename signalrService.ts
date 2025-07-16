@@ -2,6 +2,7 @@
 //https:123.30.240.29:8019/chatHub
 // signalrService.ts
 import 'react-native-url-polyfill/auto';
+import Tts from 'react-native-tts';
 import { HubConnectionBuilder, LogLevel, HubConnection } from '@microsoft/signalr';
 
 let connection: HubConnection;
@@ -17,6 +18,7 @@ export const startSignalRConnection = async (groupName: string) => {
 console.log(`[${groupName}]`);
   connection.on('ReceiveMessage', ( message) => {
     console.log(`[${groupName}] : ${message}`);
+     Tts.speak(message);
   });
 
   try {

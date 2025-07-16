@@ -142,12 +142,29 @@ const App3: React.FC = () => {
     // nodejs.channel.addListener('message', msg => {
     //   console.log('[NodeJS]', msg); // ✅ log từ nodejs
     // });
-    console.log('Tts:', Tts);
 
     Tts.getInitStatus()
-      .then(() => {
-        Tts.setDefaultLanguage('vi');
-        Tts.speak('Xin chào!');
+      .then(async () => {
+        Tts.engines().then(engines => {
+          console.log('Available TTS Engines:', engines);
+        });
+        Tts.voices().then(voices => {
+          voices.forEach(voice => {
+            console.log(
+              `ID: ${voice.id} | Name: ${voice.name} | Lang: ${
+                voice.language
+              } | Installed: ${!voice.notInstalled}`,
+            );
+          });
+        });
+
+        Tts.setDefaultLanguage('vi-VN'); // Cần thiết!
+        Tts.setDefaultVoice('vi-VN'); // Đúng với ID trong log bạn gửi
+        //await Tts.setDefaultLanguage('vi');
+        //await Tts.setDefaultLanguage('vi');
+        //await Tts.setDefaultVoice('vi-language_female_1'); // hoặc ID đúng mà bạn tìm được
+
+        await Tts.speak('xin chào hệ thống lấy số');
       })
       .catch(err => {
         console.error('TTS init failed:', err);
@@ -293,8 +310,9 @@ const App3: React.FC = () => {
   const captureAndPrint = async stt => {
     try {
       // if (!isActivated) return;
-      await handleSpeak();
-      return;
+      //   console.log('gọi nào');
+      //  await handleSpeak();
+      // return;
       const info = serviceList.find(item => item.stt === stt);
       if (!info) {
         console.error('Không tìm thấy dịch vụ');
@@ -355,11 +373,7 @@ const App3: React.FC = () => {
   };
   const handleSpeak = async () => {
     try {
-      console.log('đọc ok');
-
-      await Tts.stop(); // Dừng bất kỳ giọng nào đang nói
-      await Tts.setDefaultLanguage('vi');
-      await Tts.speak('hello mời số');
+      await Tts.speak('mời số thứ tự 68 vào bàn số 1');
       // await Tts.speak('mời số thứ tự 68 vào bàn số 1'); // Nói lại
     } catch (err) {
       console.warn('Không thể đọc:', err);
