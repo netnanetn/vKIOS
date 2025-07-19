@@ -12,6 +12,7 @@ import {
   TextInput,
   FlatList,
   KeyboardAvoidingView,
+  Switch,
 } from 'react-native';
 import 'react-native-url-polyfill/auto';
 // import nodejs from 'nodejs-mobile-react-native';
@@ -46,6 +47,7 @@ const App3: React.FC = () => {
   const STORAGE_KEY = 'SERVICE_LIST';
   const PASSWORD = '123456';
   const HEADER_TEXT_KEY = 'headerText';
+  const KIOS_ID = 'KIOS_ID';
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [showConfigModal, setShowConfigModal] = useState(false);
   const [passwordInput, setPasswordInput] = useState('');
@@ -59,9 +61,10 @@ const App3: React.FC = () => {
 
   useAutoResetServiceList(setServiceList);
 
-  const groupName = '2';
   const [message, setMessage] = useState('');
   const [user] = useState('User A');
+
+  const [allowCall, setAllowCall] = useState(false);
 
   // Dữ liệu mẫu khởi tạo 2
   const initialData = [
@@ -98,9 +101,10 @@ const App3: React.FC = () => {
   const viewShotRef = useRef<ViewShot>(null);
   const hiddenViewShotRef = useRef();
   const [headerText, setHeaderText] = useState('');
+  const [kiosId, setKiosId] = useState(0);
 
   useEffect(() => {
-    console.log('bat dau');
+    console.log('bat dau 2');
     const init = async () => {
       const jsonValue = await AsyncStorage.getItem(STORAGE_KEY);
       if (jsonValue != null) {
@@ -126,6 +130,22 @@ const App3: React.FC = () => {
 
     loadHeaderText();
 
+    const loadkiosid = async () => {
+      const stored = await AsyncStorage.getItem(KIOS_ID);
+      if (stored) {
+        setKiosId(stored);
+        console.log('kios', stored);
+      } else {
+        // Mặc định nếu chưa có
+        console.log('kios chưa có', stored);
+        const defaultText = '0';
+        setKiosId(defaultText);
+        await AsyncStorage.setItem(KIOS_ID, defaultText);
+      }
+    };
+
+    loadkiosid();
+
     const initCode = async () => {
       const id = await DeviceInfo.getAndroidId();
       setDeviceId(id);
@@ -137,38 +157,51 @@ const App3: React.FC = () => {
     };
     initCode();
 
+    const loadAllowCallStatus = async () => {
+      try {
+        const saved = await AsyncStorage.getItem('allowCall');
+        if (saved !== null) {
+          setAllowCall(saved === 'true');
+        }
+      } catch (err) {
+        console.error('Lỗi khi đọc allowCall', err);
+      }
+    };
+
+    loadAllowCallStatus();
+
     //comment lại đã
     // nodejs.start('main.js'); // ✅ khởi động lại
     // nodejs.channel.addListener('message', msg => {
     //   console.log('[NodeJS]', msg); // ✅ log từ nodejs
     // });
 
-    Tts.getInitStatus()
-      .then(async () => {
-        Tts.engines().then(engines => {
-          console.log('Available TTS Engines:', engines);
-        });
-        Tts.voices().then(voices => {
-          voices.forEach(voice => {
-            console.log(
-              `ID: ${voice.id} | Name: ${voice.name} | Lang: ${
-                voice.language
-              } | Installed: ${!voice.notInstalled}`,
-            );
-          });
-        });
+    // Tts.getInitStatus()
+    //   .then(async () => {
+    //     Tts.engines().then(engines => {
+    //       console.log('Available TTS Engines:', engines);
+    //     });
+    //     // Tts.voices().then(voices => {
+    //     //   voices.forEach(voice => {
+    //     //     console.log(
+    //     //       `ID: ${voice.id} | Name: ${voice.name} | Lang: ${
+    //     //         voice.language
+    //     //       } | Installed: ${!voice.notInstalled}`,
+    //     //     );
+    //     //   });
+    //     // });
 
-        Tts.setDefaultLanguage('vi-VN'); // Cần thiết!
-        Tts.setDefaultVoice('vi-VN'); // Đúng với ID trong log bạn gửi
-        //await Tts.setDefaultLanguage('vi');
-        //await Tts.setDefaultLanguage('vi');
-        //await Tts.setDefaultVoice('vi-language_female_1'); // hoặc ID đúng mà bạn tìm được
+    //     Tts.setDefaultLanguage('vi-VN'); // Cần thiết!
+    //     Tts.setDefaultVoice('vi-VN'); // Đúng với ID trong log bạn gửi
+    //     //await Tts.setDefaultLanguage('vi');
+    //     //await Tts.setDefaultLanguage('vi');
+    //     //await Tts.setDefaultVoice('vi-language_female_1'); // hoặc ID đúng mà bạn tìm được
 
-        await Tts.speak('Hệ thống lấy số xin chào');
-      })
-      .catch(err => {
-        console.error('TTS init failed:', err);
-      });
+    //     await Tts.speak('Hệ thống lấy số xin chào');
+    //   })
+    //   .catch(err => {
+    //     console.error('TTS init failed:', err);
+    //   });
 
     //Tts.setDefaultLanguage('vi');
     //Tts.setDefaultRate(0.3);
@@ -191,7 +224,7 @@ const App3: React.FC = () => {
     // };
 
     console.log('bat dau');
-    startSignalRConnection(groupName);
+    startSignalRConnection(`${kiosId}`);
     if (Platform.OS === 'android') {
       USBPrinter.init().then(() => {
         USBPrinter.getDeviceList().then((devices: USBPrinterDevice[]) => {
@@ -202,6 +235,33 @@ const App3: React.FC = () => {
       });
     }
   }, []);
+
+  useEffect(() => {
+    console.log('bat dau set lại kios signalr');
+    startSignalRConnection(`${kiosId}`);
+  }, [kiosId]);
+  useEffect(() => {
+    console.log('bat dau set lại kios signalr', allowCall);
+    if (allowCall) {
+      console.log('kích hoạt', allowCall);
+      Tts.getInitStatus()
+        .then(async () => {
+          Tts.engines().then(engines => {
+            console.log('Available TTS Engines:', engines);
+          });
+
+          Tts.setDefaultLanguage('vi-VN'); // Cần thiết!
+          Tts.setDefaultVoice('vi-VN'); // Đúng với ID trong log bạn gửi
+
+          await Tts.speak('Hệ thống lấy số xin chào');
+        })
+        .catch(err => {
+          console.error('TTS init failed:', err);
+        });
+    } else {
+      console.log('huỷ kích hoạt', allowCall);
+    }
+  }, [allowCall]);
 
   const checkActivationCode = async () => {
     var decryptCode = decryptString(codeInput);
@@ -294,9 +354,30 @@ const App3: React.FC = () => {
             serviceName: info.dv,
             startNumber: info.startNumber.toString(),
             ticketCode: info.currentNumber.toString(),
-            companyId: 2,
+            companyId: kiosId,
             sourceDevice: 'vKios',
           }),
+        },
+      );
+
+      const result = await response.json();
+      console.log('✅ Kết quả:', result);
+    } catch (error) {
+      console.error('❌ Lỗi gọi API:', error);
+    }
+  };
+  const resetKiosServiceOnline = async resetListData => {
+    try {
+      console.log('dt');
+      console.log(JSON.stringify(resetListData, null, 2));
+      const response = await fetch(
+        `https://vkiosapi.phanmem.vip/api/KiosService/ResetKiosService/${kiosId}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(resetListData),
         },
       );
 
@@ -371,12 +452,38 @@ const App3: React.FC = () => {
   const saveHeaderText = async (text: string) => {
     await AsyncStorage.setItem(HEADER_TEXT_KEY, text);
   };
+  const saveKiosId = async (text: string) => {
+    await AsyncStorage.setItem(KIOS_ID, text);
+    startSignalRConnection(text);
+  };
   const handleSpeak = async () => {
     try {
       await Tts.speak('mời số thứ tự 68 vào bàn số 1');
       // await Tts.speak('mời số thứ tự 68 vào bàn số 1'); // Nói lại
     } catch (err) {
       console.warn('Không thể đọc:', err);
+    }
+  };
+  const resetServiceList = async () => {
+    const resetList = serviceList.map(item => ({
+      ...item,
+      currentNumber: item.startNumber,
+    }));
+    setServiceList(resetList);
+    await resetKiosServiceOnline(resetList);
+
+    await AsyncStorage.setItem('SERVICE_LIST', JSON.stringify(resetList));
+    console.log('json', resetList);
+    // reset online
+  };
+  const toggleAllowCall = async () => {
+    try {
+      const newValue = !allowCall;
+      setAllowCall(newValue);
+      await AsyncStorage.setItem('allowCall', newValue.toString());
+      console.log('Đã lưu trạng thái allowCall:', newValue);
+    } catch (err) {
+      console.error('Lỗi khi lưu allowCall', err);
     }
   };
   return (
@@ -602,7 +709,7 @@ const App3: React.FC = () => {
                 >
                   <Text
                     style={{
-                      fontSize: 20,
+                      fontSize: 18,
                       fontWeight: '900',
                       textAlign: 'left',
                       alignSelf: 'flex-start',
@@ -881,6 +988,7 @@ const App3: React.FC = () => {
                         fontWeight: '800',
                         flex: 1,
                         borderWidth: 1,
+                        borderRadius: 5,
                         marginLeft: 10,
                         paddingStart: 10,
                       },
@@ -896,6 +1004,86 @@ const App3: React.FC = () => {
                   >
                     <Icon name="content-save" size={30} color="#007bff" />
                   </TouchableOpacity>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    backgroundColor: 'white',
+                    padding: 5,
+                    borderRadius: 10,
+                    marginBottom: 10,
+                    elevation: 1,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontWeight: 'bold',
+                      fontSize: 20,
+                      paddingStart: 10,
+                      paddingTop: 10,
+                      marginBottom: 10,
+                      textAlign: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    Mã vkios liên kết
+                  </Text>
+                  <TextInput
+                    value={kiosId}
+                    onChangeText={setKiosId}
+                    style={[
+                      styles.textInput,
+                      {
+                        color: 'blue',
+                        fontSize: 16,
+                        fontWeight: '800',
+                        flex: 1,
+                        borderRadius: 5,
+                        borderWidth: 1,
+                        marginLeft: 10,
+                        paddingStart: 10,
+                      },
+                    ]}
+                  />
+                  <TouchableOpacity
+                    style={{
+                      padding: 5,
+                      marginLeft: 10,
+                      justifyContent: 'center',
+                    }}
+                    onPress={() => saveKiosId(kiosId)}
+                  >
+                    <Icon name="content-save" size={30} color="#007bff" />
+                  </TouchableOpacity>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    backgroundColor: 'white',
+                    padding: 5,
+                    borderRadius: 10,
+                    marginBottom: 10,
+                    elevation: 1,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontWeight: 'bold',
+                      fontSize: 20,
+                      paddingStart: 10,
+                      paddingTop: 10,
+                      marginBottom: 10,
+                      textAlign: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    Cho phép gọi số:
+                  </Text>
+                  <Switch
+                    value={allowCall}
+                    onValueChange={toggleAllowCall}
+                    thumbColor={allowCall ? '#0a0' : '#aaa'}
+                  />
                 </View>
               </>
             }
@@ -1097,17 +1285,7 @@ const App3: React.FC = () => {
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}
-                  onPress={async () => {
-                    const resetList = serviceList.map(item => ({
-                      ...item,
-                      currentNumber: item.startNumber,
-                    }));
-                    setServiceList(resetList);
-                    await AsyncStorage.setItem(
-                      'SERVICE_LIST',
-                      JSON.stringify(resetList),
-                    );
-                  }}
+                  onPress={resetServiceList}
                 >
                   <Text style={{ color: '#fff', fontWeight: 'bold' }}>
                     Đặt lại số
