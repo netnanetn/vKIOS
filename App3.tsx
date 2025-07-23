@@ -13,6 +13,7 @@ import {
   FlatList,
   KeyboardAvoidingView,
   Switch,
+  ActivityIndicator,
 } from 'react-native';
 import 'react-native-url-polyfill/auto';
 // import nodejs from 'nodejs-mobile-react-native';
@@ -58,6 +59,7 @@ const App3: React.FC = () => {
   const [isActivated, setIsActivated] = useState(false);
   const [showModalCode, setShowModalCode] = useState(false);
   const [codeInput, setCodeInput] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
 
   useAutoResetServiceList(setServiceList);
 
@@ -169,59 +171,6 @@ const App3: React.FC = () => {
     };
 
     loadAllowCallStatus();
-
-    //comment lại đã
-    // nodejs.start('main.js'); // ✅ khởi động lại
-    // nodejs.channel.addListener('message', msg => {
-    //   console.log('[NodeJS]', msg); // ✅ log từ nodejs
-    // });
-
-    // Tts.getInitStatus()
-    //   .then(async () => {
-    //     Tts.engines().then(engines => {
-    //       console.log('Available TTS Engines:', engines);
-    //     });
-    //     // Tts.voices().then(voices => {
-    //     //   voices.forEach(voice => {
-    //     //     console.log(
-    //     //       `ID: ${voice.id} | Name: ${voice.name} | Lang: ${
-    //     //         voice.language
-    //     //       } | Installed: ${!voice.notInstalled}`,
-    //     //     );
-    //     //   });
-    //     // });
-
-    //     Tts.setDefaultLanguage('vi-VN'); // Cần thiết!
-    //     Tts.setDefaultVoice('vi-VN'); // Đúng với ID trong log bạn gửi
-    //     //await Tts.setDefaultLanguage('vi');
-    //     //await Tts.setDefaultLanguage('vi');
-    //     //await Tts.setDefaultVoice('vi-language_female_1'); // hoặc ID đúng mà bạn tìm được
-
-    //     await Tts.speak('Hệ thống lấy số xin chào');
-    //   })
-    //   .catch(err => {
-    //     console.error('TTS init failed:', err);
-    //   });
-
-    //Tts.setDefaultLanguage('vi');
-    //Tts.setDefaultRate(0.3);
-
-    // const onStart = () => console.log('🔊 Bắt đầu đọc');
-    // const onFinish = () => console.log('✅ Đọc xong');
-    // const onCancel = () => console.log('❌ Đọc bị hủy');
-    // const onError = (err: any) => console.log('⚠️ Lỗi TTS:', err);
-
-    // Tts.addEventListener('tts-start', onStart);
-    // Tts.addEventListener('tts-finish', onFinish);
-    // Tts.addEventListener('tts-cancel', onCancel);
-    // Tts.addEventListener('tts-error', onError);
-
-    // return () => {
-    //   Tts.removeAllListeners('tts-start');
-    //   Tts.removeAllListeners('tts-finish');
-    //   Tts.removeAllListeners('tts-cancel');
-    //   Tts.removeAllListeners('tts-error');
-    // };
 
     console.log('bat dau');
     startSignalRConnection(`${kiosId}`);
@@ -389,11 +338,9 @@ const App3: React.FC = () => {
   };
 
   const captureAndPrint = async stt => {
+    if (isProcessing) return;
+    setIsProcessing(true);
     try {
-      // if (!isActivated) return;
-      //   console.log('gọi nào');
-      //  await handleSpeak();
-      // return;
       const info = serviceList.find(item => item.stt === stt);
       if (!info) {
         console.error('Không tìm thấy dịch vụ');
@@ -425,6 +372,9 @@ const App3: React.FC = () => {
       }, 200);
     } catch (error) {
       console.error('Lỗi khi in:', error);
+      setTimeout(() => setIsProcessing(false), 1000);
+    } finally {
+      setTimeout(() => setIsProcessing(false), 1000);
     }
   };
   const openConfig = () => {
@@ -545,12 +495,6 @@ const App3: React.FC = () => {
             {headerText}
           </Text>
         </View>
-        {/* <TouchableOpacity
-          style={[styles.configButton]}
-          onPress={() => openConfig()}
-        >
-          <Icon name="cog-outline" size={24} color="#fff" />
-        </TouchableOpacity> */}
       </View>
 
       <View
@@ -581,6 +525,11 @@ const App3: React.FC = () => {
           >
             DANH MỤC LĨNH VỰC, DỊCH VỤ
           </Text>
+          <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+            {isProcessing ? (
+              <ActivityIndicator size="small" style={{}} />
+            ) : null}
+          </View>
         </View>
 
         {/* Phần bên phải - cố định 50px */}
@@ -604,55 +553,12 @@ const App3: React.FC = () => {
         </View>
       </View>
 
-      {/* <View
-        style={{
-          display: 'flex',
-          backgroundColor: '#ffffff',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: 60,
-        }}
+      <View
+        style={[
+          styles.gridContainer,
+          serviceList.length <= 5 && { justifyContent: 'center', flex: 1 },
+        ]}
       >
-        <Text
-          style={{
-            fontSize: 16,
-            color: '#004aad',
-            fontWeight: 800,
-            backgroundColor: '#fbf593',
-            padding:6,
-            paddingStart:15,
-            paddingEnd:15,
-            borderRadius:30,
-          }}
-        >
-          DANH MỤC LĨNH VỰC, DỊCH VỤ
-        </Text>
-      </View> */}
-
-      <View style={[styles.gridContainer]}>
-        {/* Header */}
-        {/* <View style={[styles.gridRow, { backgroundColor: 'red' }]}>
-          <View style={[styles.gridCell, styles.gridHeaderCell, { flex: 1 }]}>
-            <Text style={styles.gridHeaderText}>KV/QUẦY</Text>
-          </View>
-          <View
-            style={[
-              styles.gridCell,
-              styles.gridHeaderCell,
-              { flex: 3, alignItems: 'flex-start', paddingLeft: 15 },
-            ]}
-          >
-            <Text style={styles.gridHeaderText}>LĨNH VỰC / DỊCH VỤ</Text>
-          </View>
-          <View style={[styles.gridCell, styles.gridHeaderCell, { flex: 1 }]}>
-            <Text style={styles.gridHeaderText}>SỐ TIẾP</Text>
-          </View>
-          <View style={[styles.gridCell, styles.gridHeaderCell, { flex: 1 }]}>
-            <Text style={styles.gridHeaderText}>LẤY SỐ</Text>
-          </View>
-        </View> */}
-
         {serviceList.length > 5 ? (
           <View style={[styles.gridRow, { backgroundColor: '#004aad' }]}>
             {/* Cột 2: LĨNH VỰC / DỊCH VỤ - tự co dãn */}
@@ -758,8 +664,10 @@ const App3: React.FC = () => {
                       borderBottomWidth: 1,
                       borderColor: '#ccc',
                       justifyContent: 'center',
+                      opacity: isProcessing ? 0.2 : 1,
                     }}
                     onPress={() => captureAndPrint(item.stt)}
+                    disabled={isProcessing}
                   >
                     <Icon
                       name="gesture-tap"
@@ -827,8 +735,10 @@ const App3: React.FC = () => {
                       flexDirection: 'row',
                       justifyContent: 'center',
                       alignItems: 'center',
+                      opacity: isProcessing ? 0.2 : 1,
                     }}
                     onPress={() => captureAndPrint(item.stt)}
+                    disabled={isProcessing}
                   >
                     <Icon
                       name="gesture-tap"
