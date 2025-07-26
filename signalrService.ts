@@ -5,10 +5,14 @@ import 'react-native-url-polyfill/auto';
 import Tts from 'react-native-tts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { HubConnectionBuilder, LogLevel, HubConnection, HubConnectionState } from '@microsoft/signalr';
-
+import { speakTextSmart } from './AudioPlayer_bak';
 let connection: HubConnection;
 
 export const startSignalRConnection = async (groupName: string) => {
+   if (connection && connection.state !== HubConnectionState.Disconnected) {
+    console.log('⚠️ SignalR đã kết nối. Không tạo lại.');
+    return;
+  }
     console.log('bat dau 31', groupName);
   connection = new HubConnectionBuilder()
     .withUrl('https://vkiosapi.phanmem.vip/chathub') // ⚠️ Đổi IP của server bạn
@@ -42,7 +46,7 @@ export const startSignalRConnection = async (groupName: string) => {
 
         // Gọi lại server để join group
         if(groupName != '0'){
- await connection.invoke('AddToGroup', groupName);
+        await connection.invoke('AddToGroup', groupName);
         console.log(`👥 Joined group: ${groupName}`);
         }
        
@@ -60,8 +64,10 @@ export const startSignalRConnection = async (groupName: string) => {
 console.log(`[${groupName}]`);
   connection.on('ReceiveMessage', async ( message) => {
     console.log(`[${groupName}] : ${message}`);
+    
+   // await speakTextSmart(message);
     const saved = await AsyncStorage.getItem('allowCall');
-    console.log('allowCall', allowCall);
+    console.log('allowCall', saved);
     let allowCall = false;
         if (saved !== null) {
           allowCall = saved === 'true';

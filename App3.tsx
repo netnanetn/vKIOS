@@ -16,6 +16,8 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import 'react-native-url-polyfill/auto';
+import TrackPlayer, { Capability } from 'react-native-track-player';
+import { speakTextSmart, setupPlayer } from './AudioPlayer';
 // import nodejs from 'nodejs-mobile-react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { USBPrinter } from 'react-native-thermal-receipt-printer-image-qr';
@@ -124,7 +126,8 @@ const App3: React.FC = () => {
         setHeaderText(stored);
       } else {
         // Mặc định nếu chưa có
-        const defaultText = 'XÃ NGHI LỘC - TỈNH NGHỆ AN';
+        const defaultText =
+          'TRUNG TÂM HÀNH CHÍNH CÔNG XÃ NGHI LỘC - TỈNH NGHỆ AN';
         setHeaderText(defaultText);
         await AsyncStorage.setItem(HEADER_TEXT_KEY, defaultText);
       }
@@ -183,6 +186,13 @@ const App3: React.FC = () => {
         });
       });
     }
+    // const setup = async () => {
+    //   await setupPlayer();
+    // };
+
+    // setup();
+
+    // speakTextSmart('mời số một không không một đến bàn số ba');
   }, []);
 
   useEffect(() => {
@@ -192,13 +202,15 @@ const App3: React.FC = () => {
   useEffect(() => {
     console.log('bat dau set lại kios signalr', allowCall);
     if (allowCall) {
+      // return;
+      //if (true) {
       console.log('kích hoạt', allowCall);
       Tts.getInitStatus()
         .then(async () => {
           Tts.engines().then(engines => {
             console.log('Available TTS Engines:', engines);
           });
-
+          Tts.setDefaultRate(0.4);
           Tts.setDefaultLanguage('vi-VN'); // Cần thiết!
           Tts.setDefaultVoice('vi-VN'); // Đúng với ID trong log bạn gửi
 
@@ -452,7 +464,7 @@ const App3: React.FC = () => {
             {
               padding: 10,
               fontSize: 30,
-              marginVertical: 12,
+              marginVertical: 15,
               fontWeight: 800,
               paddingRight: 20,
               paddingLeft: 0,
@@ -483,17 +495,29 @@ const App3: React.FC = () => {
           >
             HỆ THỐNG LẤY SỐ THỨ TỰ
           </Text>
-          <Text
+          <View
             style={{
-              fontSize: 24,
-              marginVertical: 1,
-              color: 'white',
-              //borderRadius: 8,
-              fontWeight: 800,
+              flex: 1,
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginRight: 20,
+              //backgroundColor: 'red',
             }}
           >
-            {headerText}
-          </Text>
+            <Text
+              style={{
+                fontSize: 24,
+                textAlign: 'center',
+                marginVertical: 1,
+                color: 'white',
+                //borderRadius: 8,
+                fontWeight: 800,
+              }}
+            >
+              {headerText}
+            </Text>
+          </View>
         </View>
       </View>
 
